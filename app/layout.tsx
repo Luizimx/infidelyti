@@ -16,7 +16,7 @@ const spaceMono = Space_Mono({
 })
 
 export const metadata = {
-  title: "SPY 3 - Secret Social Scan",
+  title: "Infidelity Pro - Secret Social Scan",
   description: "Discover hidden profiles, private messages, and suspicious likes.",
     generator: 'v0.app'
 }
