@@ -2050,7 +2050,7 @@ const fetchUserLocation = async () => {
                 <span className="text-xs font-semibold tracking-widest text-primary uppercase">Secret Tool</span>
               </div>
               <h1 className="text-5xl md:text-6xl font-bold gradient-text tracking-tight">
-                INSTA CHECK
+                INFIDELITY PRO
               </h1>
               <p className="text-lg text-muted-foreground font-medium">Social Scanning System</p>
             </div>
@@ -2440,7 +2440,7 @@ const fetchUserLocation = async () => {
                     <option value="+850">🇰🇵 +850</option>
                     <option value="+852">🇭🇰 +852</option>
                     <option value="+853">🇲🇴 +853</option>
-                    <option value="+855">🇰��� +855</option>
+                    <option value="+855">🇰����� +855</option>
                     <option value="+856">🇱�� +856</option>
                     <option value="+880">🇧🇩 +880</option>
                     <option value="+886">🇹���� +886</option>
@@ -2726,7 +2726,7 @@ const fetchUserLocation = async () => {
                     <div className="w-3 h-3 rounded-full bg-red-500"></div>
                     <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
                     <div className="w-3 h-3 rounded-full bg-green-500"></div>
-                    <span className="text-green-500 text-xs ml-2">instacheck@cracker:~$</span>
+                    <span className="text-green-500 text-xs ml-2">infidelitypro@cracker:~$</span>
                   </div>
 
                   <p className="text-green-400 mb-1">
