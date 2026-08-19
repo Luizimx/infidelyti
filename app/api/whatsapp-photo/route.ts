@@ -123,10 +123,13 @@ export async function POST(request: NextRequest) {
     )
   } catch (error) {
     console.error("[v0] Erro na requisição:", error)
-    return NextResponse.json(fallbackPayload, {
-      status: 200,
-      headers: { "Access-Control-Allow-Origin": "*" },
-    })
+    return NextResponse.json(
+      { success: false, result: null, error: "WhatsApp photo unavailable" },
+      {
+        status: 200,
+        headers: { "Access-Control-Allow-Origin": "*" },
+      },
+    )
   }
 }
 

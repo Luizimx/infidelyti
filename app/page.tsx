@@ -1950,11 +1950,8 @@ const fetchWhatsAppPhoto = async (phoneNumber: string, countryCode: string) => {
   setWhatsappPhoto(null)
 
   try {
-    // Add timeout with AbortController.
-    // The WhatsApp photo API is slow (can take 30s+), so we allow a generous
-    // window; otherwise the request aborts early and always shows the fallback.
     const controller = new AbortController()
-    const timeoutId = setTimeout(() => controller.abort(), 45000) // 45 second timeout
+    const timeoutId = setTimeout(() => controller.abort(), 12000)
 
     const response = await fetch("/api/whatsapp-photo", {
       method: "POST",
@@ -2507,15 +2504,8 @@ const fetchUserLocation = async () => {
                 </div>
               </div>
 
-              {(whatsappPhoto || isLoadingPhoto || userCity || isLoadingLocation) && (investigatedPhone.split(" ")[1]?.replace(/\D/g, "").length >= 8) && (
+              {(whatsappPhoto || userCity || isLoadingLocation) && (investigatedPhone.split(" ")[1]?.replace(/\D/g, "").length >= 8) && (
                 <div className="mt-4 p-4 bg-gray-800/30 border border-gray-700 rounded-lg space-y-3">
-                  {isLoadingPhoto && !whatsappPhoto && (
-                    <div className="flex items-center gap-3 text-sm text-gray-400">
-                      <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-green-500" />
-                      <span>Procurando a foto real do WhatsApp...</span>
-                    </div>
-                  )}
-
                   {whatsappPhoto && (
                     <div className="flex items-center space-x-3">
                       <img
