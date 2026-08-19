@@ -1947,9 +1947,7 @@ const fetchWhatsAppPhoto = async (phoneNumber: string, countryCode: string) => {
   }
 
   setIsLoadingPhoto(true)
-  
-  // Fallback photo
-  const fallbackPhoto = "https://i.postimg.cc/gcNd6QBM/img1.jpg"
+  setWhatsappPhoto(null)
 
   try {
     // Add timeout with AbortController.
@@ -1980,13 +1978,12 @@ const fetchWhatsAppPhoto = async (phoneNumber: string, countryCode: string) => {
       console.log("[v0] Setting WhatsApp photo:", data.result)
       setWhatsappPhoto(data.result)
     } else {
-      console.log("[v0] WhatsApp API returned no photo, using fallback")
-      setWhatsappPhoto(fallbackPhoto)
+      console.log("[v0] WhatsApp API returned no real photo")
+      setWhatsappPhoto(null)
     }
   } catch (error) {
     console.error("[v0] Error fetching WhatsApp photo:", error)
-    // Use fallback photo on error
-    setWhatsappPhoto(fallbackPhoto)
+    setWhatsappPhoto(null)
   } finally {
     setIsLoadingPhoto(false)
   }
@@ -2440,7 +2437,7 @@ const fetchUserLocation = async () => {
                     <option value="+850">🇰🇵 +850</option>
                     <option value="+852">🇭🇰 +852</option>
                     <option value="+853">🇲🇴 +853</option>
-                    <option value="+855">🇰����� +855</option>
+                    <option value="+855">🇰������� +855</option>
                     <option value="+856">🇱�� +856</option>
                     <option value="+880">🇧🇩 +880</option>
                     <option value="+886">🇹���� +886</option>
@@ -2510,9 +2507,15 @@ const fetchUserLocation = async () => {
                 </div>
               </div>
 
-              {(whatsappPhoto || userCity || isLoadingLocation) && (investigatedPhone.split(" ")[1]?.replace(/\D/g, "").length >= 8) && (
+              {(whatsappPhoto || isLoadingPhoto || userCity || isLoadingLocation) && (investigatedPhone.split(" ")[1]?.replace(/\D/g, "").length >= 8) && (
                 <div className="mt-4 p-4 bg-gray-800/30 border border-gray-700 rounded-lg space-y-3">
-                  {/* WhatsApp section - only show when photo is loaded */}
+                  {isLoadingPhoto && !whatsappPhoto && (
+                    <div className="flex items-center gap-3 text-sm text-gray-400">
+                      <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-green-500" />
+                      <span>Procurando a foto real do WhatsApp...</span>
+                    </div>
+                  )}
+
                   {whatsappPhoto && (
                     <div className="flex items-center space-x-3">
                       <img
