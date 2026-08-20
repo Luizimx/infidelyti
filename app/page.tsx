@@ -653,9 +653,9 @@ function WhatsAppPreviewSection({ onComplete, liveViewers }: {
   const [notice, setNotice] = useState<{ message: string; x: number; y: number } | null>(null)
   const noticeTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
 
-  // Reveal the extra sections (calls & audios) after 5 seconds
+  // Reveal the remaining sections quickly after the preview opens
   useEffect(() => {
-    const t = setTimeout(() => setShowExtra(true), 5000)
+    const t = setTimeout(() => setShowExtra(true), 1200)
     return () => clearTimeout(t)
   }, [])
 
