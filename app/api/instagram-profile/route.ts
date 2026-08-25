@@ -141,25 +141,54 @@ export async function POST(request: NextRequest) {
 
     const profile = data.result
 
-    // Extrair contagens de followers, following e posts
-    const followersCount = profile.edge_followed_by?.count || 0
-    const followingCount = profile.edge_follow?.count || 0
-    const postsCount = profile.edge_owner_to_timeline_media?.count || 0
+    // APIs diferentes retornam os mesmos dados com nomes e níveis distintos.
+    const readCount = (...values: unknown[]) => {
+      const value = values.find((item) => typeof item === "number" || (typeof item === "string" && item.trim() !== ""))
+      const count = Number(value)
+      return Number.isFinite(count) ? count : 0
+    }
+    const followersCount = readCount(
+      profile.followers_count,
+      profile.follower_count,
+      profile.followers,
+      profile.edge_followed_by?.count,
+      profile.data?.followers_count,
+    )
+    const followingCount = readCount(
+      profile.following_count,
+      profile.following,
+      profile.edge_follow?.count,
+      profile.data?.following_count,
+    )
+    const postsCount = readCount(
+      profile.posts_count,
+      profile.media_count,
+      profile.edge_owner_to_timeline_media?.count,
+      profile.data?.posts_count,
+    )
+    const profilePicUrl =
+      profile.profile_pic_url_hd ||
+      profile.profile_pic_url ||
+      profile.profile_picture_url ||
+      profile.profile_pic ||
+      profile.data?.profile_pic_url_hd ||
+      profile.data?.profile_pic_url ||
+      ""
 
     return NextResponse.json({
       success: true,
       profile: {
-        username: profile.username || username,
-        full_name: profile.full_name || "",
-        biography: profile.biography || "",
-        profile_pic_url: profile.profile_pic_url || profile.profile_pic_url_hd || "",
+        username: profile.username || profile.data?.username || username,
+        full_name: profile.full_name || profile.fullName || profile.data?.full_name || "",
+        biography: profile.biography || profile.bio || profile.data?.biography || "",
+        profile_pic_url: profilePicUrl,
         followers_count: followersCount,
         following_count: followingCount,
         posts_count: postsCount,
         media_count: postsCount,
-        is_verified: profile.is_verified || false,
-        is_private: profile.is_private || false,
-        website: profile.external_url || "",
+        is_verified: Boolean(profile.is_verified ?? profile.isVerified),
+        is_private: Boolean(profile.is_private ?? profile.isPrivate),
+        website: profile.external_url || profile.website || "",
         email: "",
         phone_number: "",
         follower_count: followersCount,

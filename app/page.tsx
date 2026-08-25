@@ -2815,11 +2815,10 @@ const fetchUserLocation = async () => {
                   <div className="flex-1 text-left">
                     <p className="text-base text-white font-semibold">@{instagramProfile.username}</p>
                     <p className="text-sm text-gray-300 mt-1">
-                      {instagramProfile.media_count} posts •{" "}
-                      {typeof instagramProfile.follower_count === "number"
-                        ? instagramProfile.follower_count.toLocaleString()
-                        : instagramProfile.follower_count || "0"}{" "}
-                      followers
+                      {Number(instagramProfile.posts_count ?? instagramProfile.media_count ?? 0).toLocaleString()} posts •{" "}
+                      {Number(instagramProfile.followers_count ?? instagramProfile.follower_count ?? 0).toLocaleString()}{" "}
+                      followers •{" "}
+                      {Number(instagramProfile.following_count ?? 0).toLocaleString()} following
                     </p>
                     {instagramProfile.biography && (
                       <p className="text-sm text-gray-300 mt-2">{instagramProfile.biography}</p>

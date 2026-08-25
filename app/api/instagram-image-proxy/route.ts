@@ -9,6 +9,13 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: "Image URL is required" }, { status: 400 })
     }
 
+    const urlObj = new URL(imageUrl)
+    const allowedDomains = ["instagram.com", "cdninstagram.com", "fbcdn.net", "fbsbx.com"]
+    const isAllowed = allowedDomains.some((domain) => urlObj.hostname === domain || urlObj.hostname.endsWith(`.${domain}`))
+    if (!isAllowed) {
+      return NextResponse.json({ error: "Forbidden: Domain not allowed" }, { status: 403 })
+    }
+
     console.log("[v0] Proxying Instagram image:", imageUrl.substring(0, 100) + "...")
 
     const controller = new AbortController()
