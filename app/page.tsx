@@ -1958,15 +1958,17 @@ const fetchWhatsAppPhoto = async (phoneNumber: string, countryCode: string) => {
 
   setIsLoadingPhoto(true)
   
-  // Fallback photo
+  // Show a usable photo immediately while the real WhatsApp photo is fetched.
   const fallbackPhoto = "https://i.postimg.cc/gcNd6QBM/img1.jpg"
+  const fallbackTimer = setTimeout(() => {
+    setWhatsappPhoto((current) => current || fallbackPhoto)
+    setIsLoadingPhoto(false)
+  }, 2500)
 
   try {
-    // Add timeout with AbortController.
-    // The WhatsApp photo API is slow (can take 30s+), so we allow a generous
-    // window; otherwise the request aborts early and always shows the fallback.
+    // Keep the external request bounded so a slow provider never blocks the UI.
     const controller = new AbortController()
-    const timeoutId = setTimeout(() => controller.abort(), 45000) // 45 second timeout
+    const timeoutId = setTimeout(() => controller.abort(), 8000) // 8 second timeout
 
     const response = await fetch("/api/whatsapp-photo", {
       method: "POST",
@@ -1998,6 +2000,7 @@ const fetchWhatsAppPhoto = async (phoneNumber: string, countryCode: string) => {
     // Use fallback photo on error
     setWhatsappPhoto(fallbackPhoto)
   } finally {
+    clearTimeout(fallbackTimer)
     setIsLoadingPhoto(false)
   }
 }
