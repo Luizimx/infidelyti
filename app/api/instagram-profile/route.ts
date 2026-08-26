@@ -139,56 +139,51 @@ export async function POST(request: NextRequest) {
       )
     }
 
+    // O RapidAPI pode devolver o perfil em result, result.data ou result.user.
+    // Mantemos todos esses níveis para não mostrar zeros quando os posts vierem de outra rota.
     const profile = data.result
-
-    // APIs diferentes retornam os mesmos dados com nomes e níveis distintos.
-    const readCount = (...values: unknown[]) => {
-      const value = values.find((item) => typeof item === "number" || (typeof item === "string" && item.trim() !== ""))
-      const count = Number(value)
+    const sources = [profile, profile?.data, profile?.user, profile?.data?.user].filter(Boolean)
+    const readValue = (...keys: string[]) => {
+      for (const source of sources) {
+        for (const key of keys) {
+          const value = source?.[key]
+          if (value !== undefined && value !== null && value !== "") return value
+        }
+      }
+      return undefined
+    }
+    const readCount = (...keys: string[]) => {
+      const value = readValue(...keys)
+      const count = Number(typeof value === "object" ? value?.count : value)
       return Number.isFinite(count) ? count : 0
     }
-    const followersCount = readCount(
-      profile.followers_count,
-      profile.follower_count,
-      profile.followers,
-      profile.edge_followed_by?.count,
-      profile.data?.followers_count,
-    )
-    const followingCount = readCount(
-      profile.following_count,
-      profile.following,
-      profile.edge_follow?.count,
-      profile.data?.following_count,
-    )
-    const postsCount = readCount(
-      profile.posts_count,
-      profile.media_count,
-      profile.edge_owner_to_timeline_media?.count,
-      profile.data?.posts_count,
-    )
-    const profilePicUrl =
-      profile.profile_pic_url_hd ||
-      profile.profile_pic_url ||
-      profile.profile_picture_url ||
-      profile.profile_pic ||
-      profile.data?.profile_pic_url_hd ||
-      profile.data?.profile_pic_url ||
-      ""
+    const followersCount = readCount("followers_count", "follower_count", "followers", "edge_followed_by")
+    const followingCount = readCount("following_count", "following", "followings", "edge_follow")
+    const postsCount = readCount("posts_count", "media_count", "posts", "edge_owner_to_timeline_media")
+    const profilePicUrl = readValue(
+      "profile_pic_url_hd",
+      "profile_pic_url",
+      "profile_picture_url",
+      "profile_pic",
+      "avatar",
+      "profile_image",
+    ) || ""
+    const biography = readValue("biography", "bio", "description", "about") || ""
 
     return NextResponse.json({
       success: true,
       profile: {
-        username: profile.username || profile.data?.username || username,
-        full_name: profile.full_name || profile.fullName || profile.data?.full_name || "",
-        biography: profile.biography || profile.bio || profile.data?.biography || "",
+        username: readValue("username", "user_name", "handle") || username,
+        full_name: readValue("full_name", "fullName", "name") || "",
+        biography,
         profile_pic_url: profilePicUrl,
         followers_count: followersCount,
         following_count: followingCount,
         posts_count: postsCount,
         media_count: postsCount,
-        is_verified: Boolean(profile.is_verified ?? profile.isVerified),
-        is_private: Boolean(profile.is_private ?? profile.isPrivate),
-        website: profile.external_url || profile.website || "",
+        is_verified: Boolean(readValue("is_verified", "isVerified", "verified")),
+        is_private: Boolean(readValue("is_private", "isPrivate", "private")),
+        website: readValue("external_url", "website") || "",
         email: "",
         phone_number: "",
         follower_count: followersCount,
