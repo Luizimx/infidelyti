@@ -30,8 +30,8 @@ export async function GET(request: NextRequest) {
           Referer: "https://www.instagram.com/",
           Accept: "image/avif,image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8",
           "Accept-Language": "en-US,en;q=0.9",
-          "Cache-Control": "no-cache",
-          Pragma: "no-cache",
+          "Cache-Control": "public, max-age=86400",
+          Pragma: "",
         },
         signal: controller.signal,
       })

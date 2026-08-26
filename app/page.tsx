@@ -288,9 +288,22 @@ const getProfileFromCache = (user: string): any | null => {
       return cache[user].profile
     }
   } catch (e) {
-    console.error("[v0] Error reading cache:", e)
+    console.error("[v0] Error reading profile cache:", e)
   }
   return null
+}
+
+const getInstagramImageUrl = (url?: string | null) =>
+  url ? `/api/instagram-image-proxy?url=${encodeURIComponent(url)}` : null
+
+const preloadInstagramImage = (url?: string | null) => {
+  const imageUrl = getInstagramImageUrl(url)
+  if (!imageUrl || typeof window === "undefined") return
+  const image = new Image()
+  image.decoding = "async"
+  image.onload = () => console.log("[v0] Instagram avatar preloaded")
+  image.onerror = () => console.log("[v0] Instagram avatar preload failed")
+  image.src = imageUrl
 }
 
 // Carousel component for Liked Photo 3
@@ -360,9 +373,7 @@ function CarouselPost3({ instagramProfile, imagePreviewUrl, investigatedHandle }
       <div className="flex items-center gap-2 mt-2">
         <img
           src={
-            instagramProfile?.profile_pic_url
-              ? `/api/instagram-image-proxy?url=${encodeURIComponent(instagramProfile.profile_pic_url)}`
-              : imagePreviewUrl || "/placeholder.svg"
+            getInstagramImageUrl(instagramProfile?.profile_pic_url) || imagePreviewUrl || "/placeholder.svg"
           }
           alt="User Avatar"
           className="w-8 h-8 rounded-full object-cover border border-gray-500"
@@ -548,9 +559,7 @@ function TinderSearchStage({ instagramProfile, imagePreviewUrl, onComplete }: {
     }
   }, [onComplete])
 
-  const profileImageUrl = instagramProfile?.profile_pic_url
-    ? `/api/instagram-image-proxy?url=${encodeURIComponent(instagramProfile.profile_pic_url)}`
-    : imagePreviewUrl || "/user-profile-illustration.png"
+  const profileImageUrl = getInstagramImageUrl(instagramProfile?.profile_pic_url) || imagePreviewUrl || "/user-profile-illustration.png"
 
   return (
     <div className="text-center space-y-8 px-4 max-w-md mx-auto py-12">
@@ -1685,6 +1694,7 @@ function SpySystemContent() {
               console.log("[v0] Instagram profile validated from URL:", result.profile)
               // Start loading the image immediately if profile is found
               if (result.profile && result.profile.profile_pic_url) {
+                preloadInstagramImage(result.profile.profile_pic_url)
                 setInstagramImageLoading(true)
                 setInstagramImageError(false)
               }
