@@ -16,6 +16,8 @@ export async function GET(request: NextRequest) {
       "fbcdn.net",
       "fbsbx.com",
       "whatsapp.net",
+      "pps.whatsapp.net",
+      "mmg.whatsapp.net",
       "whatsapp.com",
       "postimg.cc",
       "randomuser.me",
@@ -32,11 +34,12 @@ export async function GET(request: NextRequest) {
 
     try {
       // Fetch the image from Instagram with timeout
+      const isWhatsAppImage = urlObj.hostname.endsWith("whatsapp.net") || urlObj.hostname.endsWith("whatsapp.com")
       const response = await fetch(imageUrl, {
         headers: {
           "User-Agent":
             "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
-          Referer: "https://www.instagram.com/",
+          Referer: isWhatsAppImage ? "https://web.whatsapp.com/" : "https://www.instagram.com/",
           Accept: "image/avif,image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8",
           "Accept-Language": "en-US,en;q=0.9",
           "Cache-Control": "public, max-age=86400",
