@@ -2453,7 +2453,7 @@ const fetchUserLocation = async () => {
                     <option value="+850">🇰🇵 +850</option>
                     <option value="+852">🇭🇰 +852</option>
                     <option value="+853">🇲🇴 +853</option>
-                    <option value="+855">🇰🇭 +855</option>
+                    <option value="+855">🇰������� +855</option>
                     <option value="+856">🇱�� +856</option>
                     <option value="+880">🇧🇩 +880</option>
                     <option value="+886">🇹���� +886</option>
@@ -2996,7 +2996,7 @@ case 4: // OLD STAGE 2: Detection and Notifications
   <div className="glass-card p-4 rounded-xl border border-red-500/50 animate-fade-in-delay-1 animate-blink-alert text-red-400">
   <p className="text-lg text-red-400 flex items-center gap-3">
   <Flame className="text-red-400 flex-shrink-0" size={24} />
-<span>Hidden Tinder profile <span className="text-white font-semibold">detected</span></span>
+> <span>Hidden Tinder profile <span className="text-white font-semibold">detected</span></span>
   </p>
   </div>
   <div className="glass-card p-4 rounded-xl border border-blue-500/30 animate-fade-in-delay-2">
@@ -3029,7 +3029,7 @@ case 4: // OLD STAGE 2: Detection and Notifications
   <div className="glass-card p-4 rounded-xl border border-purple-500/50 animate-fade-in-delay-4 animate-blink-alert text-purple-400">
   <p className="text-lg text-purple-400 flex items-center gap-3">
   <MapPin className="text-purple-400 flex-shrink-0" size={24} />
-<span>Location detected: <span className="text-white font-semibold">{investigatedLocation}</span></span>
+> <span>Location detected: <span className="text-white font-semibold">{investigatedLocation}</span></span>
   </p>
   </div>
               )}

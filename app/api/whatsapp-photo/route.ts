@@ -24,8 +24,7 @@ function getRandomFallback(): string {
 // Serve a foto atraves do nosso proxy para evitar bloqueio de hotlink/CORS
 // do CDN do WhatsApp (pps.whatsapp.net) quando carregada no navegador.
 function proxied(url: string): string {
-  // O CDN do WhatsApp exige que a URL seja preservada exatamente como retornada.
-  return `/api/instagram-image-proxy?url=${encodeURIComponent(url.trim())}`
+  return `/api/instagram-image-proxy?url=${encodeURIComponent(url)}`
 }
 
 export async function POST(request: NextRequest) {
@@ -52,15 +51,7 @@ export async function POST(request: NextRequest) {
 
     const cleanNumber = phone.replace(/\D/g, "")
     const cleanCountryCode = countryCode?.replace(/\D/g, "") || ""
-    let fullPhone = cleanNumber.startsWith(cleanCountryCode)
-      ? cleanNumber
-      : `${cleanCountryCode}${cleanNumber}`
-
-    // Números móveis brasileiros antigos podem chegar com 10 dígitos.
-    // O provedor do WhatsApp exige o nono dígito após o DDD.
-    if (cleanCountryCode === "55" && fullPhone.length === 12 && fullPhone.startsWith("55")) {
-      fullPhone = `${fullPhone.slice(0, 4)}9${fullPhone.slice(4)}`
-    }
+    const fullPhone = cleanCountryCode + cleanNumber
     
     console.log("[v0] ========== WHATSAPP API ROUTE ==========")
     console.log("[v0] Phone received:", phone)
@@ -132,9 +123,6 @@ export async function POST(request: NextRequest) {
               jsonResponse.profilePic ||
               jsonResponse.picture ||
               jsonResponse.photo ||
-              jsonResponse.data?.url ||
-              jsonResponse.data?.photo ||
-              jsonResponse.result?.url ||
               (typeof jsonResponse.result === "string" ? jsonResponse.result : null)
             console.log("[v0] Extracted photo URL:", photoUrl)
           } catch {

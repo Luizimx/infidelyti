@@ -44,7 +44,7 @@ export async function GET(request: Request) {
           : `https://ipwho.is/`
         
         const response = await fetch(ipwhoisUrl, {
-        headers: { "User-Agent": "InfidelityPro/1.0" },
+          headers: { "User-Agent": "InfidelityPro/1.0" },
           signal: AbortSignal.timeout(5000)
         })
         
