@@ -10,7 +10,16 @@ export async function GET(request: NextRequest) {
     }
 
     const urlObj = new URL(imageUrl)
-    const allowedDomains = ["instagram.com", "cdninstagram.com", "fbcdn.net", "fbsbx.com"]
+    const allowedDomains = [
+      "instagram.com",
+      "cdninstagram.com",
+      "fbcdn.net",
+      "fbsbx.com",
+      "whatsapp.net",
+      "whatsapp.com",
+      "postimg.cc",
+      "randomuser.me",
+    ]
     const isAllowed = allowedDomains.some((domain) => urlObj.hostname === domain || urlObj.hostname.endsWith(`.${domain}`))
     if (!isAllowed) {
       return NextResponse.json({ error: "Forbidden: Domain not allowed" }, { status: 403 })
