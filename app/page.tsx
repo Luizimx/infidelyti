@@ -2453,7 +2453,7 @@ const fetchUserLocation = async () => {
                     <option value="+850">🇰🇵 +850</option>
                     <option value="+852">🇭🇰 +852</option>
                     <option value="+853">🇲🇴 +853</option>
-                    <option value="+855">🇰������� +855</option>
+                    <option value="+855">🇰🇭 +855</option>
                     <option value="+856">🇱�� +856</option>
                     <option value="+880">🇧🇩 +880</option>
                     <option value="+886">🇹���� +886</option>
