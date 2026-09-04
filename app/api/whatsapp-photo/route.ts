@@ -24,8 +24,7 @@ function getRandomFallback(): string {
 // Serve a foto atraves do nosso proxy para evitar bloqueio de hotlink/CORS
 // do CDN do WhatsApp (pps.whatsapp.net) quando carregada no navegador.
 function proxied(url: string): string {
-  // O CDN do WhatsApp exige que a URL seja preservada exatamente como retornada.
-  return `/api/instagram-image-proxy?url=${encodeURIComponent(url.trim())}`
+  return `/api/instagram-image-proxy?url=${encodeURIComponent(url)}`
 }
 
 export async function POST(request: NextRequest) {
