@@ -2515,25 +2515,33 @@ const fetchUserLocation = async () => {
                 </div>
               </div>
 
-              {(whatsappPhoto || userCity || isLoadingLocation) && (investigatedPhone.split(" ")[1]?.replace(/\D/g, "").length >= 8) && (
+              {(whatsappPhoto || userCity || isLoadingLocation || investigatedPhone.split(" ")[1]?.replace(/\D/g, "").length >= 8) && (investigatedPhone.split(" ")[1]?.replace(/\D/g, "").length >= 8) && (
                 <div className="mt-4 p-4 bg-gray-800/30 border border-gray-700 rounded-lg space-y-3">
-                  {/* WhatsApp section - only show when photo is loaded */}
-                  {whatsappPhoto && (
-                    <div className="flex items-center space-x-3">
+                  {/* Always show the profile circle; use only the real photo when returned. */}
+                  <div className="flex items-center space-x-3">
+                    {whatsappPhoto ? (
                       <img
-                        src={whatsappPhoto || "/placeholder.svg"}
+                        src={whatsappPhoto}
                         alt="WhatsApp Profile"
                         className="w-12 h-12 rounded-full object-cover border-2 border-pink-500 flex-shrink-0"
                       />
+                    ) : (
+                      <div
+                        aria-label="WhatsApp profile photo unavailable"
+                        className="w-12 h-12 rounded-full bg-pink-500/15 border-2 border-pink-500 flex items-center justify-center flex-shrink-0"
+                      >
+                        <Camera className="text-pink-400" size={22} />
+                      </div>
+                    )}
                       <div className="flex-1">
                         <p className="text-xs font-bold text-red-500 animate-pulse uppercase tracking-wide">
-                          Profile Detected
+                          {whatsappPhoto ? "Profile Detected" : "Profile Circle Ready"}
                         </p>
                         <p className="text-sm text-green-400 font-medium">
-                          WhatsApp Profile Found
+                          {whatsappPhoto ? "WhatsApp Profile Found" : "WhatsApp Profile Checked"}
                         </p>
                         <p className="text-xs text-gray-400">
-                          Profile detected
+                          {whatsappPhoto ? "Real profile photo loaded" : "Real photo unavailable"}
                         </p>
                       </div>
                     </div>
