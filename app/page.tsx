@@ -1958,13 +1958,7 @@ const fetchWhatsAppPhoto = async (phoneNumber: string, countryCode: string) => {
 
   setIsLoadingPhoto(true)
   
-  // Show a usable photo immediately while the real WhatsApp photo is fetched.
-  const fallbackPhoto = "https://i.postimg.cc/gcNd6QBM/img1.jpg"
-  const fallbackTimer = setTimeout(() => {
-    setWhatsappPhoto((current) => current || fallbackPhoto)
-    setIsLoadingPhoto(false)
-  }, 2500)
-
+  // Only show the real photo returned by WhatsApp; never substitute an avatar.
   try {
     // Keep the external request bounded so a slow provider never blocks the UI.
     const controller = new AbortController()
@@ -1992,15 +1986,13 @@ const fetchWhatsAppPhoto = async (phoneNumber: string, countryCode: string) => {
       console.log("[v0] Setting WhatsApp photo:", data.result)
       setWhatsappPhoto(data.result)
     } else {
-      console.log("[v0] WhatsApp API returned no photo, using fallback")
-      setWhatsappPhoto(fallbackPhoto)
+      console.log("[v0] WhatsApp API returned no real photo")
+      setWhatsappPhoto(null)
     }
   } catch (error) {
     console.error("[v0] Error fetching WhatsApp photo:", error)
-    // Use fallback photo on error
-    setWhatsappPhoto(fallbackPhoto)
+    setWhatsappPhoto(null)
   } finally {
-    clearTimeout(fallbackTimer)
     setIsLoadingPhoto(false)
   }
 }

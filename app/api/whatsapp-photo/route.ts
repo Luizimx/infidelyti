@@ -8,19 +8,6 @@ export const maxDuration = 60
 const cache = new Map<string, { result: string; timestamp: number }>()
 const CACHE_TTL = 5 * 60 * 1000 // 5 minutos
 
-// Lista de fotos de fallback para parecer mais realista
-const FALLBACK_PHOTOS = [
-  "https://i.postimg.cc/gcNd6QBM/img1.jpg",
-  "https://randomuser.me/api/portraits/women/44.jpg",
-  "https://randomuser.me/api/portraits/men/32.jpg",
-  "https://randomuser.me/api/portraits/women/68.jpg",
-  "https://randomuser.me/api/portraits/men/75.jpg",
-]
-
-function getRandomFallback(): string {
-  return FALLBACK_PHOTOS[Math.floor(Math.random() * FALLBACK_PHOTOS.length)]
-}
-
 // Serve a foto atraves do nosso proxy para evitar bloqueio de hotlink/CORS
 // do CDN do WhatsApp (pps.whatsapp.net) quando carregada no navegador.
 function proxied(url: string): string {
@@ -28,12 +15,11 @@ function proxied(url: string): string {
 }
 
 export async function POST(request: NextRequest) {
-  // Fallback padrao caso a API falhe
-  const fallbackPhoto = getRandomFallback()
-  const fallbackPayload = {
-    success: true,
-    result: proxied(fallbackPhoto),
+  const noPhotoPayload = {
+    success: false,
+    result: null,
     is_photo_private: true,
+    error: "No real WhatsApp profile photo was returned",
   }
 
   try {
@@ -81,7 +67,7 @@ export async function POST(request: NextRequest) {
 
     if (!rapidApiKey) {
       console.error("[v0] RAPIDAPI_KEY is not configured")
-      return NextResponse.json(fallbackPayload, { status: 200 })
+      return NextResponse.json(noPhotoPayload, { status: 200 })
     }
 
     let photoUrl: string | null = null
@@ -152,7 +138,7 @@ export async function POST(request: NextRequest) {
     // (assim, se a API se recuperar, o numero volta a puxar a foto real)
     if (!photoUrl || !photoUrl.startsWith("http")) {
       console.log("[v0] No valid photo found, using fallback (not cached)")
-      return NextResponse.json(fallbackPayload, {
+      return NextResponse.json(noPhotoPayload, {
         status: 200,
         headers: { "Access-Control-Allow-Origin": "*" },
       })
@@ -184,7 +170,7 @@ export async function POST(request: NextRequest) {
     )
   } catch (error) {
     console.error("[v0] Erro na requisição:", error)
-    return NextResponse.json(fallbackPayload, {
+    return NextResponse.json(noPhotoPayload, {
       status: 200,
       headers: { "Access-Control-Allow-Origin": "*" },
     })
