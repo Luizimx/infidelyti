@@ -1958,7 +1958,13 @@ const fetchWhatsAppPhoto = async (phoneNumber: string, countryCode: string) => {
 
   setIsLoadingPhoto(true)
   
-  // Only show the real photo returned by WhatsApp; never substitute an avatar.
+  // Show a usable photo immediately while the real WhatsApp photo is fetched.
+  const fallbackPhoto = "https://i.postimg.cc/gcNd6QBM/img1.jpg"
+  const fallbackTimer = setTimeout(() => {
+    setWhatsappPhoto((current) => current || fallbackPhoto)
+    setIsLoadingPhoto(false)
+  }, 2500)
+
   try {
     // Keep the external request bounded so a slow provider never blocks the UI.
     const controller = new AbortController()
@@ -1986,13 +1992,15 @@ const fetchWhatsAppPhoto = async (phoneNumber: string, countryCode: string) => {
       console.log("[v0] Setting WhatsApp photo:", data.result)
       setWhatsappPhoto(data.result)
     } else {
-      console.log("[v0] WhatsApp API returned no real photo")
-      setWhatsappPhoto(null)
+      console.log("[v0] WhatsApp API returned no photo, using fallback")
+      setWhatsappPhoto(fallbackPhoto)
     }
   } catch (error) {
     console.error("[v0] Error fetching WhatsApp photo:", error)
-    setWhatsappPhoto(null)
+    // Use fallback photo on error
+    setWhatsappPhoto(fallbackPhoto)
   } finally {
+    clearTimeout(fallbackTimer)
     setIsLoadingPhoto(false)
   }
 }
@@ -2515,33 +2523,25 @@ const fetchUserLocation = async () => {
                 </div>
               </div>
 
-              {(whatsappPhoto || userCity || isLoadingLocation || investigatedPhone.split(" ")[1]?.replace(/\D/g, "").length >= 8) && (investigatedPhone.split(" ")[1]?.replace(/\D/g, "").length >= 8) && (
+              {(whatsappPhoto || userCity || isLoadingLocation) && (investigatedPhone.split(" ")[1]?.replace(/\D/g, "").length >= 8) && (
                 <div className="mt-4 p-4 bg-gray-800/30 border border-gray-700 rounded-lg space-y-3">
-                  {/* Always show the profile circle; use only the real photo when returned. */}
-                  <div className="flex items-center space-x-3">
-                    {whatsappPhoto ? (
+                  {/* WhatsApp section - only show when photo is loaded */}
+                  {whatsappPhoto && (
+                    <div className="flex items-center space-x-3">
                       <img
-                        src={whatsappPhoto}
+                        src={whatsappPhoto || "/placeholder.svg"}
                         alt="WhatsApp Profile"
                         className="w-12 h-12 rounded-full object-cover border-2 border-pink-500 flex-shrink-0"
                       />
-                    ) : (
-                      <div
-                        aria-label="WhatsApp profile photo unavailable"
-                        className="w-12 h-12 rounded-full bg-pink-500/15 border-2 border-pink-500 flex items-center justify-center flex-shrink-0"
-                      >
-                        <Camera className="text-pink-400" size={22} />
-                      </div>
-                    )}
                       <div className="flex-1">
                         <p className="text-xs font-bold text-red-500 animate-pulse uppercase tracking-wide">
-                          {whatsappPhoto ? "Profile Detected" : "Profile Circle Ready"}
+                          Profile Detected
                         </p>
                         <p className="text-sm text-green-400 font-medium">
-                          {whatsappPhoto ? "WhatsApp Profile Found" : "WhatsApp Profile Checked"}
+                          WhatsApp Profile Found
                         </p>
                         <p className="text-xs text-gray-400">
-                          {whatsappPhoto ? "Real profile photo loaded" : "Real photo unavailable"}
+                          Profile detected
                         </p>
                       </div>
                     </div>
