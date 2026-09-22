@@ -139,27 +139,51 @@ export async function POST(request: NextRequest) {
       )
     }
 
+    // O RapidAPI pode devolver o perfil em result, result.data ou result.user.
+    // Mantemos todos esses níveis para não mostrar zeros quando os posts vierem de outra rota.
     const profile = data.result
-
-    // Extrair contagens de followers, following e posts
-    const followersCount = profile.edge_followed_by?.count || 0
-    const followingCount = profile.edge_follow?.count || 0
-    const postsCount = profile.edge_owner_to_timeline_media?.count || 0
+    const sources = [profile, profile?.data, profile?.user, profile?.data?.user].filter(Boolean)
+    const readValue = (...keys: string[]) => {
+      for (const source of sources) {
+        for (const key of keys) {
+          const value = source?.[key]
+          if (value !== undefined && value !== null && value !== "") return value
+        }
+      }
+      return undefined
+    }
+    const readCount = (...keys: string[]) => {
+      const value = readValue(...keys)
+      const count = Number(typeof value === "object" ? value?.count : value)
+      return Number.isFinite(count) ? count : 0
+    }
+    const followersCount = readCount("followers_count", "follower_count", "followers", "edge_followed_by")
+    const followingCount = readCount("following_count", "following", "followings", "edge_follow")
+    const postsCount = readCount("posts_count", "media_count", "posts", "edge_owner_to_timeline_media")
+    const profilePicUrl = readValue(
+      "profile_pic_url_hd",
+      "profile_pic_url",
+      "profile_picture_url",
+      "profile_pic",
+      "avatar",
+      "profile_image",
+    ) || ""
+    const biography = readValue("biography", "bio", "description", "about") || ""
 
     return NextResponse.json({
       success: true,
       profile: {
-        username: profile.username || username,
-        full_name: profile.full_name || "",
-        biography: profile.biography || "",
-        profile_pic_url: profile.profile_pic_url || profile.profile_pic_url_hd || "",
+        username: readValue("username", "user_name", "handle") || username,
+        full_name: readValue("full_name", "fullName", "name") || "",
+        biography,
+        profile_pic_url: profilePicUrl,
         followers_count: followersCount,
         following_count: followingCount,
         posts_count: postsCount,
         media_count: postsCount,
-        is_verified: profile.is_verified || false,
-        is_private: profile.is_private || false,
-        website: profile.external_url || "",
+        is_verified: Boolean(readValue("is_verified", "isVerified", "verified")),
+        is_private: Boolean(readValue("is_private", "isPrivate", "private")),
+        website: readValue("external_url", "website") || "",
         email: "",
         phone_number: "",
         follower_count: followersCount,
