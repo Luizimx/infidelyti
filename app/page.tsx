@@ -4095,18 +4095,49 @@ case 7: // OLD STAGE 3: Revelation - Platform Detection
             </p>
           </div>
 
-          {/* VIP Access CTA */}
-          <div className="text-center mb-8">
-            <p className="text-muted-foreground mb-6">
-              Get <span className="font-bold text-foreground">VIP access</span> and see the full result now!
-            </p>
-            <Button
-              onClick={() => window.location.href = "https://pay.mycheckoutt.com/01997889-d90f-7176-b1ad-330b2aadd114?ref="}
-              className="w-full py-6 text-lg font-bold uppercase gradient-premium text-white rounded-xl shadow-2xl hover:opacity-90 transition-all duration-300 transform hover:scale-105 animate-pulse-glow"
-            >
-              <Lock className="mr-2" size={20} />
-              See Final Result
-            </Button>
+          {/* Access offers */}
+          <div className="mb-8 space-y-4">
+            <div className="glass-card rounded-xl border border-purple-500/30 p-5 shadow-xl">
+              <div className="flex items-center justify-between gap-3">
+                <div>
+                  <p className="text-xs font-semibold tracking-widest text-pink-400">INFIDELITY PRO</p>
+                  <p className="mt-1 text-3xl font-bold text-foreground">$37</p>
+                </div>
+                <p className="text-right text-sm text-muted-foreground">Unlock your final result</p>
+              </div>
+              <a
+                href="https://pay.mycheckoutt.com/01997889-d90f-7176-b1ad-330b2aadd114?ref="
+                className="mt-4 block rounded-xl bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 px-5 py-4 text-center text-base font-bold uppercase text-white shadow-2xl transition-all duration-300 hover:scale-[1.02] hover:opacity-90 animate-pulse-glow"
+              >
+                GET ACCESS — $37
+              </a>
+            </div>
+
+            <div className="glass-card rounded-xl border border-pink-500/50 p-5 shadow-2xl shadow-pink-500/10">
+              <span className="inline-block rounded-full border border-pink-400/40 bg-pink-500/10 px-3 py-1 text-xs font-semibold tracking-widest text-pink-300">
+                FULL ACCESS
+              </span>
+              <div className="mt-3 flex items-center justify-between gap-3">
+                <div>
+                  <p className="text-xs font-semibold tracking-widest text-pink-400">INFIDELITY PRO — COMPLETE</p>
+                  <p className="mt-1 text-3xl font-bold text-foreground">$97</p>
+                </div>
+                <p className="text-right text-sm text-muted-foreground">Unlock the complete access package</p>
+              </div>
+              <ul className="mt-4 space-y-1 text-sm text-muted-foreground">
+                <li>✓ Infidelity Pro</li>
+                <li>✓ FacebookCheck</li>
+                <li>✓ WhatsAppCheck</li>
+                <li>✓ InfoLocation</li>
+                <li>✓ TinderCheck</li>
+              </ul>
+              <a
+                href="https://pay.mycheckoutt.com/01a0cab1-baa8-7381-8595-c31ab5240d61?ref="
+                className="mt-4 block rounded-xl bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 px-5 py-4 text-center text-base font-bold uppercase text-white shadow-2xl transition-all duration-300 hover:scale-[1.02] hover:opacity-90 animate-pulse-glow"
+              >
+                GET FULL ACCESS — $97
+              </a>
+            </div>
           </div>
 
           {/* Warning Box */}
