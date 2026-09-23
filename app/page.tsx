@@ -7,8 +7,8 @@ import { Camera, Flame, Facebook, CheckCircle, MessageCircle, Heart, Upload, Sca
 import { fetchInstagramProfile, fetchInstagramPosts } from "@/lib/instagram-tracker"
 import { AlertTriangle, Check, Search, HelpCircle, Quote, ThumbsUp, Frown, Meh } from "lucide-react"
 
-// Device limit system, disabled temporarily for testing.
-const ENABLE_SEARCH_LIMIT = false
+// Device limit system - one search per device.
+const ENABLE_SEARCH_LIMIT = true
 const LIMIT_KEY = "infidelitypro_search_limit"
 const MAX_SEARCHES = 1
 
