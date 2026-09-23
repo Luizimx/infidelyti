@@ -7,8 +7,9 @@ import { Camera, Flame, Facebook, CheckCircle, MessageCircle, Heart, Upload, Sca
 import { fetchInstagramProfile, fetchInstagramPosts } from "@/lib/instagram-tracker"
 import { AlertTriangle, Check, Search, HelpCircle, Quote, ThumbsUp, Frown, Meh } from "lucide-react"
 
-// Device limit system - 1 search per device
-  const LIMIT_KEY = "infidelitypro_search_limit"
+// Device limit system, disabled temporarily for testing.
+const ENABLE_SEARCH_LIMIT = false
+const LIMIT_KEY = "infidelitypro_search_limit"
 const MAX_SEARCHES = 1
 
 // DDD to Location mapping (Brazil)
@@ -228,6 +229,7 @@ const setSearchLimitData = (username: string, profilePicUrl?: string, fullName?:
 }
 
 const hasReachedLimit = (): boolean => {
+  if (!ENABLE_SEARCH_LIMIT) return false
   const data = getSearchLimitData()
   return data !== null
 }
@@ -1580,12 +1582,11 @@ function SpySystemContent() {
 
   // Check for search limit on mount
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      const existingLimit = getSearchLimitData()
-      if (existingLimit) {
-        setLimitData(existingLimit)
-        setShowLimitReached(true)
-      }
+    if (!ENABLE_SEARCH_LIMIT || typeof window === "undefined") return
+    const existingLimit = getSearchLimitData()
+    if (existingLimit) {
+      setLimitData(existingLimit)
+      setShowLimitReached(true)
     }
   }, [])
 
@@ -1928,19 +1929,20 @@ const startCrackingAnimation = () => {
       }
 if (progress >= 100) {
   clearInterval(interval)
-  // Save search limit when analysis completes
-  const username = sanitizeUsername(investigatedHandle)
-  setSearchLimitData(
-    username,
-    instagramProfile?.profile_pic_url,
-    instagramProfile?.full_name
-  )
-  setLimitData({
-    searchedUsername: username,
-    searchedAt: Date.now(),
-    profilePicUrl: instagramProfile?.profile_pic_url,
-    fullName: instagramProfile?.full_name
-  })
+  if (ENABLE_SEARCH_LIMIT) {
+    const username = sanitizeUsername(investigatedHandle)
+    setSearchLimitData(
+      username,
+      instagramProfile?.profile_pic_url,
+      instagramProfile?.full_name
+    )
+    setLimitData({
+      searchedUsername: username,
+      searchedAt: Date.now(),
+      profilePicUrl: instagramProfile?.profile_pic_url,
+      fullName: instagramProfile?.full_name
+    })
+  }
   setTimeout(() => {
   nextStage()
   }, 500)
