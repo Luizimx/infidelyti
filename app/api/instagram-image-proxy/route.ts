@@ -16,7 +16,8 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: "Forbidden: Domain not allowed" }, { status: 403 })
     }
 
-    console.log("[v0] Proxying Instagram image:", imageUrl.substring(0, 100) + "...")
+    const sourceName = urlObj.hostname.endsWith("whatsapp.net") ? "WhatsApp" : "Instagram"
+    console.log(`[v0] Proxying ${sourceName} image:`, imageUrl.substring(0, 100) + "...")
 
     const controller = new AbortController()
     const timeoutId = setTimeout(() => controller.abort(), 10000) // 10 second timeout
@@ -39,7 +40,7 @@ export async function GET(request: NextRequest) {
       clearTimeout(timeoutId)
 
       if (!response.ok) {
-        console.error("[v0] Failed to fetch Instagram image:", response.status, response.statusText)
+        console.error(`[v0] Failed to fetch ${sourceName} image:`, response.status, response.statusText)
         return NextResponse.json({ error: "Failed to fetch image" }, { status: response.status })
       }
 

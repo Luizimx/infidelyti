@@ -77,10 +77,10 @@ export async function POST(request: NextRequest) {
 
     // Tenta buscar da API RapidAPI
     const apiUrl = "https://whatsapp-profile-data1.p.rapidapi.com/WhatsappProfilePhotoWithToken"
-    const rapidApiKey = process.env.RAPIDAPI_KEY
+    const rapidApiKey = process.env.RAPIDAPI_ACCESS_TOKEN || process.env.RAPIDAPI_KEY
 
     if (!rapidApiKey) {
-      console.error("[v0] RAPIDAPI_KEY is not configured")
+      console.error("[v0] RAPIDAPI_ACCESS_TOKEN is not configured")
       return NextResponse.json(fallbackPayload, { status: 200 })
     }
 
@@ -92,7 +92,7 @@ export async function POST(request: NextRequest) {
         const response = await fetch(apiUrl, {
           method: "POST",
           headers: {
-            "x-rapidapi-key": process.env.RAPIDAPI_KEY || "",
+            "x-rapidapi-key": rapidApiKey,
             "x-rapidapi-host": "whatsapp-profile-data1.p.rapidapi.com",
             "Content-Type": "application/json",
           },
@@ -124,6 +124,7 @@ export async function POST(request: NextRequest) {
             const jsonResponse = JSON.parse(responseText)
             const result = jsonResponse.result
             photoUrl =
+              jsonResponse.picture ||
               jsonResponse.url ||
               jsonResponse.urlImage ||
               jsonResponse.profile_pic ||
@@ -135,7 +136,8 @@ export async function POST(request: NextRequest) {
               (typeof result?.urlImage === "string" ? result.urlImage : null) ||
               (typeof result?.profile_pic === "string" ? result.profile_pic : null) ||
               (typeof jsonResponse.data?.url === "string" ? jsonResponse.data.url : null) ||
-              (typeof jsonResponse.data?.profile_pic === "string" ? jsonResponse.data.profile_pic : null)
+              (typeof jsonResponse.data?.profile_pic === "string" ? jsonResponse.data.profile_pic : null) ||
+              (typeof jsonResponse.data?.picture === "string" ? jsonResponse.data.picture : null)
             console.log("[v0] Extracted photo URL:", photoUrl)
           } catch {
             console.log("[v0] Response is not JSON")
