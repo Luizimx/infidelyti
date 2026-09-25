@@ -76,7 +76,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Tenta buscar da API RapidAPI
-    const apiUrl = "https://whatsapp-profile-data1.p.rapidapi.com/WhatsappProfilePhotoWithToken"
+    const apiUrl = "https://whatsapp-profile-data1.p.rapidapi.com/WhatsappProfileDataWithToken"
     const rapidApiKey = process.env.RAPIDAPI_ACCESS_TOKEN || process.env.RAPIDAPI_KEY
 
     if (!rapidApiKey) {
