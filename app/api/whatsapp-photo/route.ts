@@ -124,6 +124,7 @@ export async function POST(request: NextRequest) {
             const jsonResponse = JSON.parse(responseText)
             const result = jsonResponse.result
             photoUrl =
+              jsonResponse.picture ||
               jsonResponse.url ||
               jsonResponse.urlImage ||
               jsonResponse.profile_pic ||
@@ -135,7 +136,8 @@ export async function POST(request: NextRequest) {
               (typeof result?.urlImage === "string" ? result.urlImage : null) ||
               (typeof result?.profile_pic === "string" ? result.profile_pic : null) ||
               (typeof jsonResponse.data?.url === "string" ? jsonResponse.data.url : null) ||
-              (typeof jsonResponse.data?.profile_pic === "string" ? jsonResponse.data.profile_pic : null)
+              (typeof jsonResponse.data?.profile_pic === "string" ? jsonResponse.data.profile_pic : null) ||
+              (typeof jsonResponse.data?.picture === "string" ? jsonResponse.data.picture : null)
             console.log("[v0] Extracted photo URL:", photoUrl)
           } catch {
             console.log("[v0] Response is not JSON")
