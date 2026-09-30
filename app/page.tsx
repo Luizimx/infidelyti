@@ -3513,7 +3513,7 @@ case 6: // NEW STAGE: Tinder Likes Screen
                   src={
                     investigatedGender === "Feminino"
                       ? currentPhotoIndex === 0
-                        ? "/images/tinder-male-rafael.png"
+                        ? "/images/tinder-male-1.jpg"
                         : currentPhotoIndex === 1
                           ? "/images/tinder-male-2.jpg"
                           : "/images/tinder-male-3.jpg"
