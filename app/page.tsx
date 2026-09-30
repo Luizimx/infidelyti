@@ -3644,8 +3644,8 @@ case 6: // NEW STAGE: Tinder Likes Screen
                       </div>
                     </div>
                     <div className="absolute bottom-2 left-2 text-white text-sm">
-                      <p className="font-semibold text-base">bruninho</p>
-                      <span className="bg-gray-700/70 px-2 py-1 rounded-full">29</span>
+                      <p className="font-semibold text-base">Rafael</p>
+                      <span className="bg-gray-700/70 px-2 py-1 rounded-full">30</span>
                       <p className="flex items-center gap-1 mt-1">
                         <span className="inline-block w-2 h-2 bg-green-500 rounded-full"></span> Online recently...
                       </p>
