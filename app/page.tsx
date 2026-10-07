@@ -3985,7 +3985,7 @@ case 7: // OLD STAGE 3: Revelation - Platform Detection
                   <p className="text-right text-sm text-muted-foreground">Unlock your final result</p>
                 </div>
                 <a
-                  href="https://pay.mycheckoutt.com/01997889-d90f-7176-b1ad-330b2aadd114?ref="
+                  href="https://go.centerpag.com/PPU38CQGQ95"
                   className="mt-4 block rounded-xl bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 px-5 py-4 text-center text-base font-bold uppercase text-white shadow-2xl transition-all duration-300 hover:scale-[1.02] hover:opacity-90 animate-pulse-glow"
                 >
                   GET ACCESS — $37
@@ -4011,7 +4011,7 @@ case 7: // OLD STAGE 3: Revelation - Platform Detection
                   <li>✓ TinderCheck</li>
                 </ul>
                 <a
-                  href="https://pay.mycheckoutt.com/01a0cab1-baa8-7381-8595-c31ab5240d61?ref="
+                  href="https://go.centerpag.com/PPU38CQGQHT"
                   className="mt-4 block rounded-xl bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 px-5 py-4 text-center text-base font-bold uppercase text-white shadow-2xl transition-all duration-300 hover:scale-[1.02] hover:opacity-90 animate-pulse-glow"
                 >
                   GET FULL ACCESS — $97
@@ -4106,7 +4106,7 @@ case 7: // OLD STAGE 3: Revelation - Platform Detection
                 <p className="text-right text-sm text-muted-foreground">Unlock your final result</p>
               </div>
               <a
-                href="https://pay.mycheckoutt.com/01997889-d90f-7176-b1ad-330b2aadd114?ref="
+                href="https://go.centerpag.com/PPU38CQGQ95"
                 className="mt-4 block rounded-xl bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 px-5 py-4 text-center text-base font-bold uppercase text-white shadow-2xl transition-all duration-300 hover:scale-[1.02] hover:opacity-90 animate-pulse-glow"
               >
                 GET ACCESS — $37
@@ -4132,7 +4132,7 @@ case 7: // OLD STAGE 3: Revelation - Platform Detection
                 <li>✓ TinderCheck</li>
               </ul>
               <a
-                href="https://pay.mycheckoutt.com/01a0cab1-baa8-7381-8595-c31ab5240d61?ref="
+                href="https://go.centerpag.com/PPU38CQGQHT"
                 className="mt-4 block rounded-xl bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 px-5 py-4 text-center text-base font-bold uppercase text-white shadow-2xl transition-all duration-300 hover:scale-[1.02] hover:opacity-90 animate-pulse-glow"
               >
                 GET FULL ACCESS — $97
