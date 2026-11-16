@@ -27,7 +27,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <head>
         <Script
           id="google-tag-manager"
-          src="https://www.googletagmanager.com/gtm.js?id=GTM-M9JMT5WR"
+          src="https://www.googletagmanager.com/gtm.js?id=GTM-WBS2M2B3"
           strategy="beforeInteractive"
         />
         <Script
